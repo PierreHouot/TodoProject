@@ -1,0 +1,33 @@
+@TodoAPI_HostAddress = https://localhost:7212
+
+POST {{TodoAPI_HostAddress}}/api/todoitems
+Content-Type: application/json
+
+{
+    "name": "walk dog",
+    "isComplete": false
+}
+
+###
+
+GET {{TodoAPI_HostAddress}}/api/todoitems
+
+###
+
+@id=3de8cecc-6ce5-42c6-8828-24a3160b7f2e
+GET {{TodoAPI_HostAddress}}/api/todoitems/{{id}}
+
+###
+
+@id=3de8cecc-6ce5-42c6-8828-24a3160b7f2e
+DELETE {{TodoAPI_HostAddress}}/api/todoitems/{{id}}
+
+###
+
+@id=3de8cecc-6ce5-42c6-8828-24a3160b7f2e
+PUT {{TodoAPI_HostAddress}}/api/todoitems/{{id}}
+Content-Type: application/json
+
+{
+    "isComplete": true
+}
