@@ -91,5 +91,37 @@ namespace TestTodoAPI.Controllers
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
+
+        [Fact]
+        public async Task Update_ExistingItem_ReturnsNoContent()
+        {
+            // Arrange
+            var item = new CreateTodoItemRequest() { Name = "task", IsComplete = false };
+            var content = JsonContent.Create(item);
+            var itemId = await (await _client.PostAsync(apiUrl, content, TestContext.Current.CancellationToken)).Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+
+            // Act
+            var updatedContent = JsonContent.Create( new TodoItem { Id= itemId, Name = item.Name, IsComplete = true });
+            var response = await _client.PutAsync(Path.Combine(apiUrl, itemId), updatedContent, TestContext.Current.CancellationToken);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+
+        [Fact]
+        public async Task Update_WrongId_ReturnsBadRequest()
+        {
+            // Arrange
+            var item = new CreateTodoItemRequest() { Name = "task", IsComplete = false };
+            var content = JsonContent.Create(item);
+            var itemId = await (await _client.PostAsync(apiUrl, content, TestContext.Current.CancellationToken)).Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+
+            // Act
+            var updatedContent = JsonContent.Create(new TodoItem { Id = Guid.NewGuid().ToString(), Name = item.Name, IsComplete = true });
+            var response = await _client.PutAsync(Path.Combine(apiUrl, itemId), updatedContent, TestContext.Current.CancellationToken);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
     }
 }
