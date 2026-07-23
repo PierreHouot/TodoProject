@@ -1,6 +1,6 @@
 ﻿namespace TodoAPI.Requests
 {
-    public class CreateTodoItemRequest
+    public class CreateActivityRequest
     {
         public required string Name { get; set; }
         public bool IsComplete { get; set; }

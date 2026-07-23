@@ -1,6 +1,6 @@
 @TodoAPI_HostAddress = https://localhost:7212
 
-POST {{TodoAPI_HostAddress}}/api/todoitems
+POST {{TodoAPI_HostAddress}}/api/activity
 Content-Type: application/json
 {
     "name": "walk dog",
@@ -9,22 +9,22 @@ Content-Type: application/json
 
 ###
 
-GET {{TodoAPI_HostAddress}}/api/todoitems
+GET {{TodoAPI_HostAddress}}/api/activity
 
 ###
 
 @id=3de8cecc-6ce5-42c6-8828-24a3160b7f2e
-GET {{TodoAPI_HostAddress}}/api/todoitems/{{id}}
+GET {{TodoAPI_HostAddress}}/api/activity/{{id}}
 
 ###
 
 @id=3de8cecc-6ce5-42c6-8828-24a3160b7f2e
-DELETE {{TodoAPI_HostAddress}}/api/todoitems/{{id}}
+DELETE {{TodoAPI_HostAddress}}/api/activity/{{id}}
 
 ###
 
 @id=4f23aa6b-213b-4d7c-9ee8-308969054543
-PUT {{TodoAPI_HostAddress}}/api/todoitems/{{id}}
+PUT {{TodoAPI_HostAddress}}/api/activity/{{id}}
 Content-Type: application/json
 {
     "Id"=4f23aa6b-213b-4d7c-9ee8-308969054543

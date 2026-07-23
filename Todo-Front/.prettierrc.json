@@ -4,5 +4,6 @@
   "singleQuote": true,
   "printWidth": 100,
   "bracketSpacing": true,
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "singleAttributePerLine": true
 }

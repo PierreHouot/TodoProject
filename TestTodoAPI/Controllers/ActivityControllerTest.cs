@@ -6,13 +6,13 @@ using TodoAPI.Models;
 using TodoAPI.Requests;
 namespace TestTodoAPI.Controllers
 {
-    public class TodoItemsControllerTest : IClassFixture<WebAppFactory<Program>>
+    public class ActivityControllerTest : IClassFixture<WebAppFactory<Program>>
     {
         private readonly WebAppFactory<Program> _factory;
-        private readonly string apiUrl = "/api/todoitems";
+        private readonly string apiUrl = "/api/activity";
         private HttpClient _client;
 
-        public TodoItemsControllerTest(WebAppFactory<Program> factory)
+        public ActivityControllerTest(WebAppFactory<Program> factory)
         {
             _factory = factory;
             _factory.ResetDatabase();
@@ -34,7 +34,7 @@ namespace TestTodoAPI.Controllers
         {
 
             // Arrange
-            var item = new CreateTodoItemRequest() { Name = "task", IsComplete = false };
+            var item = new CreateActivityRequest() { Name = "task", IsComplete = false };
             var content = JsonContent.Create(item);
 
             // Act
@@ -49,14 +49,14 @@ namespace TestTodoAPI.Controllers
         {
 
             // Arrange
-            var item = new CreateTodoItemRequest() { Name = "task", IsComplete = false };
+            var item = new CreateActivityRequest() { Name = "task", IsComplete = false };
             var content = JsonContent.Create(item);
             await _client.PostAsync(apiUrl, content, TestContext.Current.CancellationToken);
 
             // Act
             var response = await _client.GetAsync(apiUrl, TestContext.Current.CancellationToken);
             var data = (await response.Content
-                .ReadFromJsonAsync<List<TodoItem>>(cancellationToken: TestContext.Current.CancellationToken))?
+                .ReadFromJsonAsync<List<Activity>>(cancellationToken: TestContext.Current.CancellationToken))?
                 .First();
 
             // Assert
@@ -81,7 +81,7 @@ namespace TestTodoAPI.Controllers
         public async Task Delete_ExistingItem_ReturnsNoContent()
         {
             // Arrange
-            var item = new CreateTodoItemRequest() { Name = "task", IsComplete = false };
+            var item = new CreateActivityRequest() { Name = "task", IsComplete = false };
             var content = JsonContent.Create(item);
             var itemId = await (await _client.PostAsync(apiUrl, content, TestContext.Current.CancellationToken)).Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
 
@@ -96,12 +96,12 @@ namespace TestTodoAPI.Controllers
         public async Task Update_ExistingItem_ReturnsNoContent()
         {
             // Arrange
-            var item = new CreateTodoItemRequest() { Name = "task", IsComplete = false };
+            var item = new CreateActivityRequest() { Name = "task", IsComplete = false };
             var content = JsonContent.Create(item);
             var itemId = await (await _client.PostAsync(apiUrl, content, TestContext.Current.CancellationToken)).Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
 
             // Act
-            var updatedContent = JsonContent.Create( new TodoItem { Id= itemId, Name = item.Name, IsComplete = true });
+            var updatedContent = JsonContent.Create( new Activity { Id= itemId, Name = item.Name, IsComplete = true });
             var response = await _client.PutAsync(Path.Combine(apiUrl, itemId), updatedContent, TestContext.Current.CancellationToken);
 
             // Assert
@@ -112,12 +112,12 @@ namespace TestTodoAPI.Controllers
         public async Task Update_WrongId_ReturnsBadRequest()
         {
             // Arrange
-            var item = new CreateTodoItemRequest() { Name = "task", IsComplete = false };
+            var item = new CreateActivityRequest() { Name = "task", IsComplete = false };
             var content = JsonContent.Create(item);
             var itemId = await (await _client.PostAsync(apiUrl, content, TestContext.Current.CancellationToken)).Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
 
             // Act
-            var updatedContent = JsonContent.Create(new TodoItem { Id = Guid.NewGuid().ToString(), Name = item.Name, IsComplete = true });
+            var updatedContent = JsonContent.Create(new Activity { Id = Guid.NewGuid().ToString(), Name = item.Name, IsComplete = true });
             var response = await _client.PutAsync(Path.Combine(apiUrl, itemId), updatedContent, TestContext.Current.CancellationToken);
 
             // Assert
