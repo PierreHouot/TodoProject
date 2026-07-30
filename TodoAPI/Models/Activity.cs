@@ -1,6 +1,6 @@
 ﻿namespace TodoAPI.Models
 {
-    public class Activity
+    public record Activity
     {
         public required string Id { get; set; }
         public string? Name { get; set; }
