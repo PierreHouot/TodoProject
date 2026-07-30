@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ActivityCard from '@/component/ActivityCard.vue';
 import { useActivityStore } from '@/stores/activity';
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
@@ -12,12 +13,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div>
-        <div :key="task.id" v-for="task in activities">
-            <div>{{ task.name }}</div>
-        </div>
+    <div :key="activity.id" v-for="activity in activities">
+        <ActivityCard :activity="activity" />
     </div>
-
 </template>
-
-<style scoped></style>
