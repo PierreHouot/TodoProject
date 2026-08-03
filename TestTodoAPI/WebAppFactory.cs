@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data.Common;
-using TodoAPI.Models;
+using TodoAPI.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 public class WebAppFactory<TProgram>
@@ -15,7 +15,7 @@ public class WebAppFactory<TProgram>
         {
             var dbContextDescriptor = services.SingleOrDefault(
                 d => d.ServiceType ==
-                    typeof(IDbContextOptionsConfiguration<TodoContext>));
+                    typeof(IDbContextOptionsConfiguration<ActivityContext>));
 
             services.Remove(dbContextDescriptor);
 
@@ -25,7 +25,7 @@ public class WebAppFactory<TProgram>
 
             services.Remove(dbConnectionDescriptor);
 
-            services.AddDbContext<TodoContext>((container, options) =>
+            services.AddDbContext<ActivityContext>((container, options) =>
             {
                 options.UseInMemoryDatabase("TodoTests");
             });
@@ -38,7 +38,7 @@ public class WebAppFactory<TProgram>
     {
         using var scope = Services.CreateScope();
 
-        var db = scope.ServiceProvider.GetRequiredService<TodoContext>();
+        var db = scope.ServiceProvider.GetRequiredService<ActivityContext>();
 
         db.Database.EnsureDeleted();
         db.Database.EnsureCreated();

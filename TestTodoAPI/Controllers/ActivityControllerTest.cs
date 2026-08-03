@@ -34,7 +34,7 @@ namespace TestTodoAPI.Controllers
         {
 
             // Arrange
-            var item = new CreateActivityRequest() { Name = "task", IsComplete = false };
+            var item = new CreateActivityRequest() { Name = "task", Description = "very describe"};
             var content = JsonContent.Create(item);
 
             // Act
@@ -49,7 +49,7 @@ namespace TestTodoAPI.Controllers
         {
 
             // Arrange
-            var item = new CreateActivityRequest() { Name = "task", IsComplete = false };
+            var item = new CreateActivityRequest() { Name = "task", Description = "very describe" };
             var content = JsonContent.Create(item);
             await _client.PostAsync(apiUrl, content, TestContext.Current.CancellationToken);
 
@@ -81,12 +81,13 @@ namespace TestTodoAPI.Controllers
         public async Task Delete_ExistingItem_ReturnsNoContent()
         {
             // Arrange
-            var item = new CreateActivityRequest() { Name = "task", IsComplete = false };
+            var item = new CreateActivityRequest() { Name = "task", Description = "very describe" };
             var content = JsonContent.Create(item);
             var itemId = await (await _client.PostAsync(apiUrl, content, TestContext.Current.CancellationToken)).Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
 
             // Act
             var response = await _client.DeleteAsync(Path.Combine(apiUrl, itemId), TestContext.Current.CancellationToken);
+           
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
@@ -96,12 +97,12 @@ namespace TestTodoAPI.Controllers
         public async Task Update_ExistingItem_ReturnsNoContent()
         {
             // Arrange
-            var item = new CreateActivityRequest() { Name = "task", IsComplete = false };
+            var item = new CreateActivityRequest() { Name = "task", Description = "very describe" };
             var content = JsonContent.Create(item);
             var itemId = await (await _client.PostAsync(apiUrl, content, TestContext.Current.CancellationToken)).Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
 
             // Act
-            var updatedContent = JsonContent.Create( new Activity { Id= itemId, Name = item.Name, IsComplete = true });
+            var updatedContent = JsonContent.Create( new Activity { Id= itemId, Name = item.Name, Description = "new describe"});
             var response = await _client.PutAsync(Path.Combine(apiUrl, itemId), updatedContent, TestContext.Current.CancellationToken);
 
             // Assert
@@ -109,15 +110,34 @@ namespace TestTodoAPI.Controllers
         }
 
         [Fact]
-        public async Task Update_WrongId_ReturnsBadRequest()
+        public async Task Update_ExistingItem_IsUpdated()
         {
             // Arrange
-            var item = new CreateActivityRequest() { Name = "task", IsComplete = false };
+            var item = new CreateActivityRequest() { Name = "task", Description = "very describe" };
             var content = JsonContent.Create(item);
             var itemId = await (await _client.PostAsync(apiUrl, content, TestContext.Current.CancellationToken)).Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
 
             // Act
-            var updatedContent = JsonContent.Create(new Activity { Id = Guid.NewGuid().ToString(), Name = item.Name, IsComplete = true });
+            var updatedContent = JsonContent.Create(new Activity { Id = itemId, Name = item.Name, Description = "new describe" });
+            await _client.PutAsync(Path.Combine(apiUrl, itemId), updatedContent, TestContext.Current.CancellationToken);
+
+            var updatedItem = await _client.GetAsync(Path.Combine(apiUrl, itemId), TestContext.Current.CancellationToken);
+            var data = await updatedItem.Content.ReadFromJsonAsync<Activity>(cancellationToken: TestContext.Current.CancellationToken);
+
+            // Assert
+            data?.Description.Should().BeEquivalentTo("new describe");
+        }
+
+        [Fact]
+        public async Task Update_WrongId_ReturnsBadRequest()
+        {
+            // Arrange
+            var item = new CreateActivityRequest() { Name = "task", Description = "very describe" };
+            var content = JsonContent.Create(item);
+            var itemId = await (await _client.PostAsync(apiUrl, content, TestContext.Current.CancellationToken)).Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+
+            // Act
+            var updatedContent = JsonContent.Create(new Activity { Id = Guid.NewGuid().ToString(), Name = item.Name, Description = "new describe" });
             var response = await _client.PutAsync(Path.Combine(apiUrl, itemId), updatedContent, TestContext.Current.CancellationToken);
 
             // Assert
