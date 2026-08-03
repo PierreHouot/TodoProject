@@ -9,10 +9,8 @@ defineProps({
 </script>
 
 <template>
-    <div class="border rounded m-2 p-1 w-80">
-        <div>{{ activity.name }}</div>
-        <div>{{ activity.isCompleted }}</div>
+    <div class=" w-full m-2 p-1">
+        <div class="bg-dark text-accent p-2 font-black rounded-t-xl text-center">{{ activity.name }}</div>
+        <div class="bg-block text-dark p-2 rounded-b-xl">{{ activity.description }}</div>
     </div>
 </template>
-
-<style scoped></style>

@@ -1,1 +1,17 @@
 @import 'tailwindcss';
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+@theme {
+  --font-title: Gabriela, serif;
+  --color-background-dark: #361d17ef;
+  --color-dark: #311f1b;
+  --color-surface: #b9a391;
+  --color-block: #dfcbbb;
+  --color-light: #fcf2e5;
+  --color-background-light: #ffffe2af;
+  --color-accent: #cc752d;
+}

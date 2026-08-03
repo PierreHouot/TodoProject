@@ -1,16 +1,18 @@
 <script setup lang="ts">
+import GlobalHeader from './component/global/GlobalHeader.vue';
 import ActivitiesView from './views/ActivitiesView.vue';
+
+import bgImg from "@/assets/marion-botella.webp"
 
 
 </script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
-  <ActivitiesView />
+  <img :src="bgImg" class="-z-10 fixed inset-0 h-screen w-screen object-cover">
+  <div class=" flex flex-col items-center w-full h-screen m-auto bg-background-dark text-text">
+    <GlobalHeader />
+    <div class="flex flex-1 justify-center w-full bg-background-light">
+      <ActivitiesView />
+    </div>
+  </div>
 </template>
-
-<style scoped></style>
