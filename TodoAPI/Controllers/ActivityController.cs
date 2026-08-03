@@ -8,8 +8,8 @@ using TodoAPI.Requests;
 [ApiController]
 public class ActivityController : ControllerBase
 {
-    private readonly TodoContext _context;
-    public ActivityController(TodoContext context)
+    private readonly ActivityContext _context;
+    public ActivityController(ActivityContext context)
     {
         _context = context;
     }
@@ -72,7 +72,7 @@ public class ActivityController : ControllerBase
         var newItem = new Activity
         {
             Id = Guid.NewGuid().ToString(),
-            IsComplete = Activity.IsComplete,
+            Description = Activity.Description,
             Name = Activity.Name,
 
         };

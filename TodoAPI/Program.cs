@@ -7,7 +7,7 @@ var connectionString = builder.Configuration.GetConnectionString("TodoContext")
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
-builder.Services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoList"));
+builder.Services.AddDbContext<ActivityContext>(opt => opt.UseInMemoryDatabase("TodoList"));
 
 if (builder.Environment.IsDevelopment())
 {
