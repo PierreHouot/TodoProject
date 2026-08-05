@@ -25,22 +25,22 @@ const callAPI = async <Type>(
 
 export const api = {
   async get<Type>(path: string): Promise<Type[]> {
-    return callAPI(path, 'GET');
+    return await callAPI(path, 'GET');
   },
 
-  update<Type>(path: string, id: string, data: Type) {
-    return callAPI<Type>(`${path}/${id}`, 'PUT', { data });
+  async update<Type>(path: string, id: string, data: Type) {
+    return await callAPI<Type>(`${path}/${id}`, 'PUT', { data });
   },
 
-  getById<Type>(path: string, id: string) {
-    return callAPI<Type>(`${path}/${id}`, 'GET');
+  async getById<Type>(path: string, id: string) {
+    return await callAPI<Type>(`${path}/${id}`, 'GET');
   },
 
-  create<Type>(path: string, data: Omit<Type, 'id'>) {
-    return callAPI<string>(path, 'POST', { data });
+  async create<Type>(path: string, data: Omit<Type, 'id'>) {
+    return await callAPI<string>(path, 'POST', { data });
   },
 
-  delete(path: string, id: string) {
-    return callAPI<void>(`${path}/${id}`, 'DELETE');
+  async delete(path: string, id: string) {
+    return await callAPI<void>(`${path}/${id}`, 'DELETE');
   },
 };

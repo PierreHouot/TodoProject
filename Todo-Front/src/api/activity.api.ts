@@ -12,11 +12,13 @@ const ActivityApi = {
     return await api.getById(path, id);
   },
 
-  async create(data: any) {
+  async create(data: Activity) {
+    console.log(data);
+
     return await api.create(path, data);
   },
 
-  async update(id: string, data: any) {
+  async update(id: string, data: Partial<Activity>) {
     return await api.update(path, id, data);
   },
 
