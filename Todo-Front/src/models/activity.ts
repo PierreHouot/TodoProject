@@ -1,5 +1,6 @@
 export type Activity = {
   id?: string;
   name: string;
-  description: string;
+  description?: string;
+  date: Date
 };

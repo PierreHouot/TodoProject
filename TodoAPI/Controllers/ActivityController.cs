@@ -69,13 +69,20 @@ public class ActivityController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Activity>> PostActivity(CreateActivityRequest Activity)
     {
+        var date = Activity.Date;
+        if (date is null)
+        {
+            date = DateTime.Today;
+        }
+
         var newItem = new Activity
         {
             Id = Guid.NewGuid().ToString(),
             Description = Activity.Description,
             Name = Activity.Name,
-
+            Date = date,
         };
+
         _context.Activity.Add(newItem);
         await _context.SaveChangesAsync();
 

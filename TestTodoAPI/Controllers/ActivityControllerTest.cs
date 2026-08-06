@@ -49,7 +49,7 @@ namespace TestTodoAPI.Controllers
         {
 
             // Arrange
-            var item = new CreateActivityRequest() { Name = "task", Description = "very describe" };
+            var item = new CreateActivityRequest() { Name = "task", Description = "very describe", Date = DateTime.Today };
             var content = JsonContent.Create(item);
             await _client.PostAsync(apiUrl, content, TestContext.Current.CancellationToken);
 
@@ -61,7 +61,7 @@ namespace TestTodoAPI.Controllers
 
             // Assert
             data.Should().NotBeNull();
-            item.Should().BeEquivalentTo(data, option => option.Excluding(x => x.Id));
+            item.Should().BeEquivalentTo(data, option => option.Excluding(x => x.Id)); 
         }
 
         [Fact]
