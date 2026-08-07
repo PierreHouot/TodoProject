@@ -9,7 +9,7 @@ body {
 button,
 div,
 p {
-  transition: all 0.1s;
+  transition: all 0.15s;
 }
 
 @theme {

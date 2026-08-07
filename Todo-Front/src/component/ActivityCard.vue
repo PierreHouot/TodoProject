@@ -25,7 +25,7 @@ function deleteMoment(id?: string) {
 <template>
   <div class="w-full group tracking-tight leading-tight">
     <div class="flex z-10 relative justify-between bg-dark rounded-t-xl text-center">
-      <div class="flex items-center justify-center text-light w-full">
+      <div class="flex items-center justify-center text-light w-full ml-0.5">
         {{ activity.name }}
       </div>
       <GlobalButton
@@ -38,7 +38,7 @@ function deleteMoment(id?: string) {
       class="bg-block relative text-[13px] -top-3 text-dark pt-4 p-2 border-2 rounded-b-2xl border-dark"
     >
       <div>{{ activity.description }}</div>
-      <div class="text-xs mt-2 opacity-70">{{ formatedDate }}</div>
+      <div class="text-xs text-end opacity-70">{{ formatedDate }}</div>
     </div>
   </div>
 </template>

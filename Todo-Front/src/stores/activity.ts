@@ -6,22 +6,24 @@ import { Temporal } from '@js-temporal/polyfill';
 
 export const useActivityStore = defineStore('activity', () => {
   const activities = ref<Activity[]>();
-  const activitiesByYear = ref<YearActivities[]>();
+  const activityYears = ref<Array<string>>([]);
 
   async function fetchActivities() {
     activities.value = await ActivityApi.getAll()
-      .then(items => items.sort(sortByDate));
+      .then(items => {
+        items.forEach(item => {
+          const year = item.date.year.toString()
+          if (!activityYears.value.includes(year))
+            activityYears.value.push(year)
+        })
+        return items.sort(sortByDate)
+      });
+    activityYears.value.sort().reverse()
   }
 
-  return { activities, fetchActivities };
+  return { activities, activityYears, fetchActivities };
 });
 
 function sortByDate(left: Activity, right: Activity) {
   return Temporal.PlainDate.compare(right.date, left.date)
-}
-
-
-interface YearActivities {
-  year: number,
-  activities: Activity[]
 }

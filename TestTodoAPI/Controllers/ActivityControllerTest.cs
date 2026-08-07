@@ -34,7 +34,7 @@ namespace TestTodoAPI.Controllers
         {
 
             // Arrange
-            var item = new CreateActivityRequest() { Name = "task", Description = "very describe"};
+            var item = new CreateActivityRequest() { Name = "task", Description = "very describe" };
             var content = JsonContent.Create(item);
 
             // Act
@@ -49,7 +49,7 @@ namespace TestTodoAPI.Controllers
         {
 
             // Arrange
-            var item = new CreateActivityRequest() { Name = "task", Description = "very describe", Date = DateOnly.FromDateTime(DateTime.Today)};
+            var item = new CreateActivityRequest() { Name = "task", Description = "very describe", Date = DateOnly.FromDateTime(DateTime.Today) };
             var content = JsonContent.Create(item);
             await _client.PostAsync(apiUrl, content, TestContext.Current.CancellationToken);
 
@@ -61,7 +61,7 @@ namespace TestTodoAPI.Controllers
 
             // Assert
             data.Should().NotBeNull();
-            item.Should().BeEquivalentTo(data, option => option.Excluding(x => x.Id)); 
+            item.Should().BeEquivalentTo(data, option => option.Excluding(x => x.Id));
         }
 
         [Fact]
@@ -87,7 +87,7 @@ namespace TestTodoAPI.Controllers
 
             // Act
             var response = await _client.DeleteAsync(Path.Combine(apiUrl, itemId), TestContext.Current.CancellationToken);
-           
+
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
@@ -102,7 +102,7 @@ namespace TestTodoAPI.Controllers
             var itemId = await (await _client.PostAsync(apiUrl, content, TestContext.Current.CancellationToken)).Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
 
             // Act
-            var updatedContent = JsonContent.Create( new Activity { Id= itemId, Name = item.Name, Description = "new describe"});
+            var updatedContent = JsonContent.Create(new Activity { Id = itemId, Name = item.Name, Description = "new describe" });
             var response = await _client.PutAsync(Path.Combine(apiUrl, itemId), updatedContent, TestContext.Current.CancellationToken);
 
             // Assert
