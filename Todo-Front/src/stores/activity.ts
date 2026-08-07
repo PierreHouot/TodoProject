@@ -2,6 +2,7 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import type { Activity } from '@/models/activity';
 import ActivityApi from '@/api/activity.api';
+import { Temporal } from '@js-temporal/polyfill';
 
 export const useActivityStore = defineStore('activity', () => {
   const activities = ref<Activity[]>();
@@ -9,16 +10,6 @@ export const useActivityStore = defineStore('activity', () => {
 
   async function fetchActivities() {
     activities.value = await ActivityApi.getAll()
-      .then(items => {
-        items.forEach((item) => {
-          item.date =
-            new Date(
-              new Date(
-                item.date.toString()
-              ))
-        }
-        return items
-      })
       .then(items => items.sort(sortByDate));
   }
 
@@ -26,10 +17,9 @@ export const useActivityStore = defineStore('activity', () => {
 });
 
 function sortByDate(left: Activity, right: Activity) {
-  console.log(left.date);
-
-  return new Date(left.date) > new Date(right.date) ? -1 : 1
+  return Temporal.PlainDate.compare(right.date, left.date)
 }
+
 
 interface YearActivities {
   year: number,

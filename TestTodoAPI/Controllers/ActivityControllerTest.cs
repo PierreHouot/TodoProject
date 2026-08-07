@@ -10,7 +10,7 @@ namespace TestTodoAPI.Controllers
     {
         private readonly WebAppFactory<Program> _factory;
         private readonly string apiUrl = "/api/activity";
-        private HttpClient _client;
+        private readonly HttpClient _client;
 
         public ActivityControllerTest(WebAppFactory<Program> factory)
         {
@@ -49,7 +49,7 @@ namespace TestTodoAPI.Controllers
         {
 
             // Arrange
-            var item = new CreateActivityRequest() { Name = "task", Description = "very describe", Date = DateTime.Today };
+            var item = new CreateActivityRequest() { Name = "task", Description = "very describe", Date = DateOnly.FromDateTime(DateTime.Today)};
             var content = JsonContent.Create(item);
             await _client.PostAsync(apiUrl, content, TestContext.Current.CancellationToken);
 

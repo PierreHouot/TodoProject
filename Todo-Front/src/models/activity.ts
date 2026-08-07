@@ -1,6 +1,8 @@
+import type { Temporal } from "@js-temporal/polyfill";
+
 export type Activity = {
   id?: string;
   name: string;
   description?: string;
-  date: Date
+  date: Temporal.PlainDate
 };

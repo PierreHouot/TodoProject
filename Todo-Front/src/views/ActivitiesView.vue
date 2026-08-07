@@ -16,6 +16,12 @@ onMounted(async () => {
 const showModal = ref(false);
 
 const hasActivities = computed(() => activities.value && activities.value.length > 0);
+
+const showYear = (index: number) => {
+  if (!activities.value) return;
+  if (index === 0) return true;
+  return activities.value[index]?.date.year !== activities.value[index - 1]!.date.year;
+};
 </script>
 
 <template>
@@ -28,9 +34,19 @@ const hasActivities = computed(() => activities.value && activities.value.length
       >
         <div
           :key="activity.id"
-          v-for="activity in activities"
-          class="mb-1.5 last:mb-0"
+          v-for="(activity, id) in activities"
         >
+          <div
+            v-if="showYear(id)"
+            class="flex items-center"
+            :id="activity.date.year.toString()"
+          >
+            <div class="font-title text-surface">{{ activity.date.year }}</div>
+            <div
+              class="w-full ml-4 h-0 border-surface border-2 rounded"
+              style="content: ' '"
+            ></div>
+          </div>
           <ActivityCard :activity="activity" />
         </div>
       </div>

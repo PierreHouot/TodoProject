@@ -4,109 +4,105 @@ using TodoAPI.Infrastructure;
 using TodoAPI.Models;
 using TodoAPI.Requests;
 
-[Route("api/[controller]")]
-[ApiController]
-public class ActivityController : ControllerBase
+namespace TodoAPI.Controllers
 {
-    private readonly ActivityContext _context;
-    public ActivityController(ActivityContext context)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ActivityController(ActivityContext context) : ControllerBase
     {
-        _context = context;
-    }
+        private readonly ActivityContext _context = context;
 
-    // GET: api/Activity
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Activity>>> GetActivity() => 
-        await _context.Activity.ToListAsync();
+        // GET: api/Activity
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Activity>>> GetActivity() =>
+            await _context.Activity.ToListAsync();
 
-    // GET: api/Activity/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Activity>> GetActivity(string id)
-    {
-        var Activity = await _context.Activity.FindAsync(id);
-
-        if (Activity == null)
+        // GET: api/Activity/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Activity>> GetActivity(string id)
         {
-            return NotFound();
-        }
+            var Activity = await _context.Activity.FindAsync(id);
 
-        return Activity;
-    }
-
-    // PUT: api/Activity/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutActivity(string? id, Activity Activity)
-    {
-        if (id != Activity.Id)
-        {
-            return BadRequest();
-        }
-
-        _context.Entry(Activity).State = EntityState.Modified;
-
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!ActivityExists(id))
+            if (Activity == null)
             {
                 return NotFound();
             }
-            else
+
+            return Activity;
+        }
+
+        // PUT: api/Activity/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutActivity(string? id, Activity Activity)
+        {
+            if (id != Activity.Id)
             {
-                throw;
+                return BadRequest();
             }
+
+            _context.Entry(Activity).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ActivityExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        return NoContent();
-    }
-
-    // POST: api/Activity
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPost]
-    public async Task<ActionResult<Activity>> PostActivity(CreateActivityRequest Activity)
-    {
-        var date = Activity.Date;
-        if (date is null)
+        // POST: api/Activity
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Activity>> PostActivity(CreateActivityRequest Activity)
         {
-            date = DateTime.Today;
+            var date = Activity.Date;
+            date ??= DateOnly.FromDateTime(DateTime.Today);
+
+            var newItem = new Activity
+            {
+                Id = Guid.NewGuid().ToString(),
+                Description = Activity.Description,
+                Name = Activity.Name,
+                Date = date,
+            };
+
+            _context.Activity.Add(newItem);
+            await _context.SaveChangesAsync();
+
+            return Created(nameof(GetActivity), newItem.Id);
         }
 
-        var newItem = new Activity
+        // DELETE: api/Activity/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteActivity(string? id)
         {
-            Id = Guid.NewGuid().ToString(),
-            Description = Activity.Description,
-            Name = Activity.Name,
-            Date = date,
-        };
+            var activity = await _context.Activity.FindAsync(id);
+            if (activity == null)
+            {
+                return NotFound();
+            }
 
-        _context.Activity.Add(newItem);
-        await _context.SaveChangesAsync();
+            _context.Activity.Remove(activity);
+            await _context.SaveChangesAsync();
 
-        return Created(nameof(GetActivity), newItem.Id);
-    }
-
-    // DELETE: api/Activity/5
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteActivity(string? id)
-    {
-        var activity = await _context.Activity.FindAsync(id);
-        if (activity == null)
-        {
-            return NotFound();
+            return NoContent();
         }
 
-        _context.Activity.Remove(activity);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
-    }
-
-    private bool ActivityExists(string? id)
-    {
-        return _context.Activity.Any(e => e.Id == id);
+        private bool ActivityExists(string? id)
+        {
+            return _context.Activity.Any(e => e.Id == id);
+        }
     }
 }

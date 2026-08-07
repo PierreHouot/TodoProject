@@ -3,9 +3,8 @@ using TodoAPI.Models;
 
 namespace TodoAPI.Infrastructure
 {
-    public class ActivityContext: DbContext
+    public class ActivityContext(DbContextOptions<ActivityContext> options) : DbContext(options)
     {
-        public ActivityContext(DbContextOptions<ActivityContext> options) : base(options) { }
         public DbSet<Activity> Activity { get; set; } = null!;
     }
 }

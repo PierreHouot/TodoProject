@@ -6,41 +6,50 @@ using System.Data.Common;
 using TodoAPI.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-public class WebAppFactory<TProgram>
-    : WebApplicationFactory<TProgram> where TProgram : class
+namespace TestTodoAPI
 {
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    public class WebAppFactory<TProgram>
+        : WebApplicationFactory<TProgram> where TProgram : class
     {
-        builder.ConfigureServices(services =>
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            var dbContextDescriptor = services.SingleOrDefault(
-                d => d.ServiceType ==
-                    typeof(IDbContextOptionsConfiguration<ActivityContext>));
-
-            services.Remove(dbContextDescriptor);
-
-            var dbConnectionDescriptor = services.SingleOrDefault(
-                d => d.ServiceType ==
-                    typeof(DbConnection));
-
-            services.Remove(dbConnectionDescriptor);
-
-            services.AddDbContext<ActivityContext>((container, options) =>
+            builder.ConfigureServices(services =>
             {
-                options.UseInMemoryDatabase("TodoTests");
+                var dbContextDescriptor = services.SingleOrDefault(
+                    d => d.ServiceType ==
+                        typeof(IDbContextOptionsConfiguration<ActivityContext>));
+
+                if (dbContextDescriptor != null)
+                {
+                    services.Remove(dbContextDescriptor);
+                }
+
+                var dbConnectionDescriptor = services.SingleOrDefault(
+                    d => d.ServiceType ==
+                        typeof(DbConnection));
+
+                if (dbConnectionDescriptor != null)
+                {
+                    services.Remove(dbConnectionDescriptor);
+                }
+
+                services.AddDbContext<ActivityContext>((container, options) =>
+                {
+                    options.UseInMemoryDatabase("TodoTests");
+                });
             });
-        });
 
-        builder.UseEnvironment("Development");
-    }
+            builder.UseEnvironment("Development");
+        }
 
-    public void ResetDatabase()
-    {
-        using var scope = Services.CreateScope();
+        public void ResetDatabase()
+        {
+            using var scope = Services.CreateScope();
 
-        var db = scope.ServiceProvider.GetRequiredService<ActivityContext>();
+            var db = scope.ServiceProvider.GetRequiredService<ActivityContext>();
 
-        db.Database.EnsureDeleted();
-        db.Database.EnsureCreated();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+        }
     }
 }
