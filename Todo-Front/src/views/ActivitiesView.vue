@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ActivitiesList from '@/component/ActivitiesList.vue';
-import ActivityModalForm from '@/component/ActivityModalForm.vue';
+import ActivityModalForm from '@/component/ActivityModalAddForm.vue';
 import GlobalButton from '@/component/global/GlobalButton.vue';
 import { useActivityStore } from '@/stores/activity';
 import { storeToRefs } from 'pinia';

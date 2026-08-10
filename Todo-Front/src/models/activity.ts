@@ -4,5 +4,5 @@ export type Activity = {
   id?: string;
   name: string;
   description?: string;
-  date?: Temporal.PlainDate
+  date: Temporal.PlainDate
 };

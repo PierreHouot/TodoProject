@@ -4,7 +4,7 @@ import { computed, type PropType } from 'vue';
 import GlobalButton from './global/GlobalButton.vue';
 import ActivityApi from '@/api/activity.api.ts';
 import { useActivityStore } from '@/stores/activity.ts';
-import { Temporal } from '@js-temporal/polyfill';
+import GlobalDropdown from './global/GlobalDropdown.vue';
 
 const store = useActivityStore();
 
@@ -12,8 +12,10 @@ const props = defineProps({
   activity: { required: true, type: Object as PropType<Activity> },
 });
 
+const emit = defineEmits(['edit']);
+
 const formatedDate = computed(() =>
-  props.activity.date.toLocaleString(undefined, { dateStyle: 'full' }),
+  props.activity.date?.toLocaleString(undefined, { dateStyle: 'full' }),
 );
 
 function deleteMoment(id?: string) {
@@ -28,11 +30,19 @@ function deleteMoment(id?: string) {
       <div class="flex items-center justify-center text-light w-full ml-0.5">
         {{ activity.name }}
       </div>
-      <GlobalButton
-        @click="deleteMoment(activity.id)"
-        class="group-hover:opacity-100 opacity-0 text-xs"
-        >🗑️</GlobalButton
-      >
+
+      <GlobalDropdown>
+        <GlobalButton
+          @click="() => emit('edit', activity.id)"
+          class="hover:text-light"
+          >Modify
+        </GlobalButton>
+        <GlobalButton
+          @click="deleteMoment(activity.id)"
+          class="hover:text-light"
+          >Delete
+        </GlobalButton>
+      </GlobalDropdown>
     </div>
     <div
       class="bg-block relative text-[13px] -top-3 text-dark pt-4 p-2 border-2 rounded-b-2xl border-dark"

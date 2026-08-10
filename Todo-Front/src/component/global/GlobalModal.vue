@@ -13,7 +13,7 @@ const emit = defineEmits(['close']);
 <template>
   <div
     v-if="isDisplayed"
-    class="fixed top-0 right-0 flex justify-center items-center h-screen w-screen z-10 bg-[rgba(0,0,0,0.7)]"
+    class="fixed top-0 right-0 flex justify-center items-center h-screen w-screen z-50 bg-[rgba(0,0,0,0.7)]"
     @click.self="() => emit('close')"
   >
     <div
