@@ -6,7 +6,6 @@ import ActivityApi from '@/api/activity.api.ts';
 import { useActivityStore } from '@/stores/activity.store.ts';
 import type { activityCreate } from '@/api/requests/activityCreate.ts';
 import { useToasterStore } from '@/stores/toaster.store.ts';
-import type { AxiosError } from 'axios';
 const store = useActivityStore();
 
 const toast = useToasterStore();

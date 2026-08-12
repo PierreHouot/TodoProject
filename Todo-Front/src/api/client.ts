@@ -1,12 +1,5 @@
-import axios, { type AxiosRequestConfig, type Method } from 'axios';
-/**
- * Méthode générique qui s'occupera de tous les appels API
- *
- * @param path - Chemin api, ex: path`
- * @param method - Méthode HTTP
- * @param config - Config optionnelle d'axios
- * @returns Retourne une promesse du type passé en Generic TS
- */
+import { useToasterStore } from '@/stores/toaster.store';
+import axios, { AxiosError, type AxiosRequestConfig, type Method } from 'axios';
 
 const callAPI = async <Type>(
   path: string,
@@ -18,6 +11,10 @@ const callAPI = async <Type>(
     url: apiurl,
     method,
     ...config,
+  }).catch((error: AxiosError) => {
+    const toast = useToasterStore();
+    toast.sendToast(error.name, `${error.message} ${error.response?.data as string}`);
+    return Promise.reject(error);
   });
 
   return res.data;
