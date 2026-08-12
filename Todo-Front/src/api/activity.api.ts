@@ -1,22 +1,26 @@
 import type { Activity } from '@/models/activity';
 import { api } from '../api/client';
 import { Temporal } from '@js-temporal/polyfill';
-import type { ActivityDTO } from '@/models/activityDTO';
+import type { ActivityDTO } from './requests/activityDTO';
+import type { activityCreate } from './requests/activityCreate';
 
 const path = 'activity';
 
 const ActivityApi = {
   async getAll() {
-    return (await api.get<ActivityDTO>(path))
-      .map(item => ({ ...item, date: stringToPlainDate(item.date) })) as Activity[]
+    return (await api.get<ActivityDTO>(path)).map((item) => ({
+      ...item,
+      date: stringToPlainDate(item.date),
+    })) as Activity[];
   },
 
   async getById(id: string) {
-    return await api.getById<ActivityDTO>(path, id)
-      .then(item => ({ ...item, date: stringToPlainDate(item.date) })) as Activity
+    return (await api
+      .getById<ActivityDTO>(path, id)
+      .then((item) => ({ ...item, date: stringToPlainDate(item.date) }))) as Activity;
   },
 
-  async create(data: Activity) {
+  async create(data: activityCreate) {
     return await api.create(path, data);
   },
 
@@ -32,5 +36,5 @@ const ActivityApi = {
 export default ActivityApi;
 
 function stringToPlainDate(date: string) {
-  return Temporal.PlainDate.from(date)
+  return Temporal.PlainDate.from(date);
 }

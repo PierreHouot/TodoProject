@@ -1,7 +1,6 @@
-
 export type ActivityDTO = {
-  id?: string;
+  id: string;
   name: string;
   description?: string;
-  date: string
+  date: string;
 };

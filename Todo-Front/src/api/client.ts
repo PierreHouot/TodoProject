@@ -41,6 +41,6 @@ export const api = {
   },
 
   async delete(path: string, id: string) {
-    return await callAPI<void>(`${path}/${id}`, 'DELETE');
+    return await callAPI(`${path}/${id}`, 'DELETE');
   },
 };

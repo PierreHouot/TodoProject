@@ -9,21 +9,19 @@ export const useActivityStore = defineStore('activity', () => {
   const activityYears = ref<Array<string>>([]);
 
   async function fetchActivities() {
-    activities.value = await ActivityApi.getAll()
-      .then(items => {
-        items.forEach(item => {
-          const year = item.date.year.toString()
-          if (!activityYears.value.includes(year))
-            activityYears.value.push(year)
-        })
-        return items.sort(sortByDate)
+    activities.value = await ActivityApi.getAll().then((items) => {
+      items.forEach((item) => {
+        const year = item.date.year.toString();
+        if (!activityYears.value.includes(year)) activityYears.value.push(year);
       });
-    activityYears.value.sort().reverse()
+      return items.sort(sortByDate);
+    });
+    activityYears.value.sort().reverse();
   }
 
   return { activities, activityYears, fetchActivities };
 });
 
 function sortByDate(left: Activity, right: Activity) {
-  return Temporal.PlainDate.compare(right.date, left.date)
+  return Temporal.PlainDate.compare(right.date, left.date);
 }
