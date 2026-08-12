@@ -8,7 +8,7 @@ import type { activityCreate } from '@/api/requests/activityCreate.ts';
 import { useToasterStore } from '@/stores/toaster.store.ts';
 const store = useActivityStore();
 
-const toast = useToasterStore()
+const toast = useToasterStore();
 
 defineProps({
   show: { required: true, type: Boolean },
@@ -22,8 +22,11 @@ function postActivity() {
   ActivityApi.create(activity.value)
     .then(() => store.fetchActivities())
     .then(() => {
-      toast.sendToast({ title: "New moment posted", message: `${activity.value.name} has been created` })
-      emit('posted')
+      toast.sendToast({
+        title: 'New moment posted',
+        message: `${activity.value.name} has been created`,
+      });
+      emit('posted');
     })
     .finally(() => {
       activity.value.name = '';
@@ -36,17 +39,48 @@ function postActivity() {
 <template>
   <GlobalModal :is-displayed="show">
     <div class="flex flex-col">
-      <label for="name" class="mb-1 mt-2">Name</label>
-      <input id="name" v-model="activity.name" class="bg-light rounded p-1" placeholder="Activity..." />
-      <label for="desc" class="mb-1 mt-2">Description</label>
-      <textarea id="desc" v-model="activity.description" class="bg-light rounded p-1" placeholder="Description..."
-        rows="4" />
-      <label for="date" class="mb-1 mt-2">
-        Date</label>
-      <input class="bg-light rounded p-1" id="date" type="date" v-model="activity.date" />
+      <label
+        for="name"
+        class="mb-1 mt-2"
+        >Name</label
+      >
+      <input
+        id="name"
+        required
+        v-model="activity.name"
+        class="bg-light rounded p-1"
+        placeholder="Activity..."
+      />
+      <label
+        for="desc"
+        class="mb-1 mt-2"
+        >Description</label
+      >
+      <textarea
+        id="desc"
+        v-model="activity.description"
+        class="bg-light rounded p-1"
+        placeholder="Description..."
+        rows="4"
+      />
+      <label
+        for="date"
+        class="mb-1 mt-2"
+      >
+        Date</label
+      >
+      <input
+        class="bg-light rounded p-1"
+        id="date"
+        type="date"
+        v-model="activity.date"
+      />
     </div>
     <template #extra-buttons>
-      <GlobalButton class="bg-accent text-light hover:bg-light hover:text-accent" @click="postActivity()">
+      <GlobalButton
+        class="bg-accent text-light hover:bg-light hover:text-accent"
+        @click="postActivity()"
+      >
         Send
       </GlobalButton>
     </template>

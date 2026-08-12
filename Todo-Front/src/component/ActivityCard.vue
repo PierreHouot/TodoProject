@@ -23,8 +23,11 @@ const formatedDate = computed(() =>
 function deleteMoment(id?: string) {
   if (!id) return;
   ActivityApi.delete(id).then(() => {
-    toast.sendToast({ title: "Moment Deleted", message: `Moment "${props.activity.name}" has been deleted` })
-    store.fetchActivities()
+    toast.sendToast({
+      title: 'Moment Deleted',
+      message: `Moment "${props.activity.name}" has been deleted`,
+    });
+    store.fetchActivities();
   });
 }
 </script>
@@ -37,13 +40,21 @@ function deleteMoment(id?: string) {
       </div>
 
       <GlobalDropdown>
-        <GlobalButton @click="() => emit('edit', activity.id)" class="hover:text-light">Modify
+        <GlobalButton
+          @click="() => emit('edit', activity.id)"
+          class="hover:text-light"
+          >Modify
         </GlobalButton>
-        <GlobalButton @click="deleteMoment(activity.id)" class="hover:text-light">Delete
+        <GlobalButton
+          @click="deleteMoment(activity.id)"
+          class="hover:text-light"
+          >Delete
         </GlobalButton>
       </GlobalDropdown>
     </div>
-    <div class="bg-block relative text-[13px] -top-3 text-dark pt-4 p-2 border-2 rounded-b-2xl border-dark">
+    <div
+      class="bg-block relative text-[13px] -top-3 text-dark pt-4 p-2 border-2 rounded-b-2xl border-dark"
+    >
       <div>{{ activity.description }}</div>
       <div class="text-xs text-end opacity-70">{{ formatedDate }}</div>
     </div>

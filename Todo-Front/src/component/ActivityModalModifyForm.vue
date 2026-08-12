@@ -33,10 +33,15 @@ function modifyActivity() {
   if (!editedActivity.value.id) return;
 
   ActivityApi.update(editedActivity.value.id, editedActivity.value)
-    .then(() => { toast.sendToast({ title: "Moment Updated", message: `Moment "${editedActivity.value?.name}" has been updated` }) })
+    .then(() => {
+      toast.sendToast({
+        title: 'Moment Updated',
+        message: `Moment "${editedActivity.value?.name}" has been updated`,
+      });
+    })
     .finally(() => {
-      store.fetchActivities()
-      emit('modified')
+      store.fetchActivities();
+      emit('modified');
     });
 }
 </script>
@@ -44,17 +49,47 @@ function modifyActivity() {
 <template>
   <GlobalModal :is-displayed="display">
     <div class="flex flex-col">
-      <label for="name" class="mb-1 mt-2">Name</label>
-      <input id="name" v-model="editedActivity!.name" class="bg-light rounded p-1" placeholder="Activity..." />
-      <label for="desc" class="mb-1 mt-2">Description</label>
-      <textarea id="desc" v-model="editedActivity!.description" class="bg-light rounded p-1"
-        placeholder="Description..." rows="4" />
-      <label for="date" class="mb-1 mt-2">
-        Date</label>
-      <input class="bg-light rounded p-1" id="date" type="date" v-model="editedActivity!.date" />
+      <label
+        for="name"
+        class="mb-1 mt-2"
+        >Name</label
+      >
+      <input
+        id="name"
+        v-model="editedActivity!.name"
+        class="bg-light rounded p-1"
+        placeholder="Activity..."
+      />
+      <label
+        for="desc"
+        class="mb-1 mt-2"
+        >Description</label
+      >
+      <textarea
+        id="desc"
+        v-model="editedActivity!.description"
+        class="bg-light rounded p-1"
+        placeholder="Description..."
+        rows="4"
+      />
+      <label
+        for="date"
+        class="mb-1 mt-2"
+      >
+        Date</label
+      >
+      <input
+        class="bg-light rounded p-1"
+        id="date"
+        type="date"
+        v-model="editedActivity!.date"
+      />
     </div>
     <template #extra-buttons>
-      <GlobalButton class="bg-accent text-light hover:bg-light hover:text-accent" @click="modifyActivity()">
+      <GlobalButton
+        class="bg-accent text-light hover:bg-light hover:text-accent"
+        @click="modifyActivity()"
+      >
         Send
       </GlobalButton>
     </template>
