@@ -67,6 +67,11 @@ namespace TodoAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Activity>> PostActivity(CreateActivityRequest Activity)
         {
+            if (string.IsNullOrEmpty(Activity.Name))
+            {
+                return BadRequest("Name field is missing");
+            }
+
             var date = Activity.Date;
             date ??= DateOnly.FromDateTime(DateTime.Today);
 
