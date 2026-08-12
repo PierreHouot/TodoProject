@@ -23,10 +23,7 @@ const formatedDate = computed(() =>
 function deleteMoment(id?: string) {
   if (!id) return;
   ActivityApi.delete(id).then(() => {
-    toast.sendToast({
-      title: 'Moment Deleted',
-      message: `Moment "${props.activity.name}" has been deleted`,
-    });
+    toast.sendToast('Moment Deleted', `Moment "${props.activity.name}" has been deleted`);
     store.fetchActivities();
   });
 }

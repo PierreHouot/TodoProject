@@ -6,6 +6,7 @@ import GlobalButton from './global/GlobalButton.vue';
 import ActivityApi from '@/api/activity.api.ts';
 import { useActivityStore } from '@/stores/activity.store.ts';
 import { useToasterStore } from '@/stores/toaster.store.ts';
+import type { AxiosError } from 'axios';
 
 const store = useActivityStore();
 const toast = useToasterStore();
@@ -34,14 +35,14 @@ function modifyActivity() {
 
   ActivityApi.update(editedActivity.value.id, editedActivity.value)
     .then(() => {
-      toast.sendToast({
-        title: 'Moment Updated',
-        message: `Moment "${editedActivity.value?.name}" has been updated`,
-      });
+      toast.sendToast('Moment Updated', `Moment "${editedActivity.value?.name}" has been updated`);
     })
     .finally(() => {
       store.fetchActivities();
       emit('modified');
+    })
+    .catch((error: AxiosError) => {
+      toast.sendToast(error.name, error.message);
     });
 }
 </script>

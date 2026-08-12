@@ -6,6 +6,7 @@ import ActivityApi from '@/api/activity.api.ts';
 import { useActivityStore } from '@/stores/activity.store.ts';
 import type { activityCreate } from '@/api/requests/activityCreate.ts';
 import { useToasterStore } from '@/stores/toaster.store.ts';
+import type { AxiosError } from 'axios';
 const store = useActivityStore();
 
 const toast = useToasterStore();
@@ -18,14 +19,10 @@ const emit = defineEmits(['posted']);
 
 const activity = ref<activityCreate>({ name: '' });
 function postActivity() {
-  if (!activity.value.name) return;
   ActivityApi.create(activity.value)
     .then(() => store.fetchActivities())
     .then(() => {
-      toast.sendToast({
-        title: 'New moment posted',
-        message: `${activity.value.name} has been created`,
-      });
+      toast.sendToast('New moment posted', `${activity.value.name} has been created`);
       emit('posted');
     })
     .finally(() => {

@@ -43,7 +43,7 @@ function handleToast() {
     <div
       v-if="displayedNotification"
       :key="Date.now()"
-      class="absolute m-2 top-0 right-0 z-30 w-50 min-h-5 bg-surface rounded border-dark border"
+      class="absolute m-2 top-0 right-0 z-60 w-50 min-h-5 bg-surface rounded border-dark border"
     >
       <h1 class="text-accent px-2 h-full bg-dark text-lg font-bold">
         {{ displayedNotification?.title }}
