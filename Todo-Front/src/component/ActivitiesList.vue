@@ -31,10 +31,10 @@ function editActivity(id: string) {
 </script>
 
 <template>
-  <div class="flex w-96">
+  <div class="flex">
     <div
       v-if="hasActivities"
-      class="overflow-y-scroll h-full px-2 border-l-2 border-surface"
+      class="overflow-y-scroll h-full px-2 md:border-l-2 border-surface"
     >
       <div
         :key="activity.id"
@@ -50,7 +50,7 @@ function editActivity(id: string) {
         </div>
         <ActivityCard
           :activity="activity"
-          class="pl-4"
+          class="pl-4 mb-2"
           @edit="(id: string) => editActivity(id)"
         />
       </div>

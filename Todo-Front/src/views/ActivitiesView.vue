@@ -1,35 +1,37 @@
 <script setup lang="ts">
 import ActivitiesList from '@/component/ActivitiesList.vue';
-import ActivityModalForm from '@/component/ActivityModalAddForm.vue';
+import ActivityModalAddForm from '@/component/ActivityModalAddForm.vue';
+import ActivityYears from '@/component/ActivityYears.vue';
 import GlobalButton from '@/component/global/GlobalButton.vue';
-import { useActivityStore } from '@/stores/activity.store';
-import { storeToRefs } from 'pinia';
+
 import { ref } from 'vue';
-const store = useActivityStore();
-const { activityYears } = storeToRefs(store);
 
 const showModal = ref(false);
-
-function scrollToSection(id: string) {
-  document.getElementById(id)?.scrollIntoView();
-}
 </script>
 
 <template>
-  <div class="grid grid-cols-3 gap-7 grid-rows-1">
-    <div class="justify-self-end flex flex-col text-surface text-sm mt-2">
-      <div>Explore years :</div>
-      <button v-for="year in activityYears" :key="year"
-        class="text-end cursor-pointer text-xs hover:text-dark hover:italic" :href="`#${year}`"
-        @click.prevent="() => scrollToSection(year)">
-        - {{ year }}
-      </button>
+  <div class="md:grid max-w-212 grid-cols-4 gap-7 grid-rows-1 h-full">
+    <ActivityYears class="max-md:hidden" />
+    <ActivitiesList class="col-span-2 m-auto w-[min(28rem,98%)] h-full" />
+    <div comment="Switch between 2 buttons depending on responsive">
+      <GlobalButton
+        class="bg-dark h-8 text-light mt-2 max-md:hidden"
+        @click="() => (showModal = true)"
+      >
+        Add a moment
+      </GlobalButton>
+      <GlobalButton
+        class="bg-accent text-light font-bold text-4xl md:hidden fixed bottom-5 right-2 z-1 border-2 border-light"
+        @click="() => (showModal = true)"
+      >
+        ✐
+      </GlobalButton>
     </div>
-    <ActivitiesList />
-    <GlobalButton class="bg-dark h-8 text-light mt-2" @click="() => (showModal = true)">
-      Add a moment
-    </GlobalButton>
   </div>
 
-  <ActivityModalForm @close="() => (showModal = false)" @posted="() => (showModal = false)" :show="showModal" />
+  <ActivityModalAddForm
+    @close="() => (showModal = false)"
+    @posted="() => (showModal = false)"
+    :show="showModal"
+  />
 </template>

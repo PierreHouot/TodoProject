@@ -2,10 +2,10 @@
 import { ref } from 'vue';
 import GlobalModal from './global/GlobalModal.vue';
 import GlobalButton from './global/GlobalButton.vue';
-import ActivityApi from '@/api/activity.api.ts';
-import { useActivityStore } from '@/stores/activity.store.ts';
-import type { activityCreate } from '@/api/requests/activityCreate.ts';
-import { useToasterStore } from '@/stores/toaster.store.ts';
+import ActivityApi from '@/api/activity.api';
+import { useActivityStore } from '@/stores/activity.store';
+import type { activityCreate } from '@/api/requests/activityCreate';
+import { useToasterStore } from '@/stores/toaster.store';
 const store = useActivityStore();
 
 const toast = useToasterStore();
@@ -37,7 +37,7 @@ function postActivity() {
     <div class="flex flex-col">
       <label
         for="name"
-        class="mb-1 mt-2"
+        class="mb-1 mt-2 font-bold"
         >Name</label
       >
       <input
@@ -49,7 +49,7 @@ function postActivity() {
       />
       <label
         for="desc"
-        class="mb-1 mt-2"
+        class="mb-1 mt-2 font-bold"
         >Description</label
       >
       <textarea
@@ -59,12 +59,15 @@ function postActivity() {
         placeholder="Description..."
         rows="4"
       />
-      <label
-        for="date"
-        class="mb-1 mt-2"
-      >
-        Date</label
-      >
+      <div class="flex items-center mb-1 mt-2">
+        <label
+          class="font-bold"
+          for="date"
+        >
+          Date
+        </label>
+        <p class="opacity-50 ml-2 text-sm">(Leave empty for today)</p>
+      </div>
       <input
         class="bg-light rounded p-1"
         id="date"

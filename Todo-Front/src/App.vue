@@ -8,13 +8,15 @@ import bgImg from '@/assets/marion-botella.webp';
 
 <template>
   <div class="h-screen w-screen">
-    <img :src="bgImg" class="-z-10 fixed inset-0 h-full w-full object-cover" />
+    <img
+      :src="bgImg"
+      class="-z-10 fixed inset-0 h-full w-full object-cover"
+    />
     <div class="flex flex-col items-center w-full h-full">
       <GlobalHeader class="bg-background-dark shrink-0 text-text w-full h-16" />
 
-      <div class=" relative flex justify-center w-full h-[calc(100%-4rem)] bg-background-light">
+      <div class="relative flex justify-center w-full h-[calc(100%-4rem)] bg-background-light">
         <GlobalToaster />
-
         <ActivitiesView />
       </div>
     </div>

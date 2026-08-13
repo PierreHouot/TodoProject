@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TodoAPI.Infrastructure;
+using static System.Net.WebRequestMethods;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("TodoContext")
@@ -15,7 +16,10 @@ if (builder.Environment.IsDevelopment())
     {
         options.AddDefaultPolicy(policy =>
         {
-            policy.WithOrigins(["http://localhost:5173", "http://localhost:4000"])
+            policy.WithOrigins([
+                "http://localhost:5173",
+                "http://192.168.1.53:5173"
+                ])
                   .AllowAnyMethod()
                   .AllowAnyHeader();
         });

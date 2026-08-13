@@ -17,7 +17,7 @@ const emit = defineEmits(['close']);
     @click.self="() => emit('close')"
   >
     <div
-      class="z-20 flex flex-col min-h-1/3 max-h-4/5 min-w-1/3 max-w-4/5 relative shadow-2xl justify-between bg-surface text-dark rounded p-2"
+      class="flex flex-col min-h-1/3 max-h-4/5 min-w-1/3 max-w-11/12 relative shadow-2xl justify-between bg-surface text-dark rounded p-2"
     >
       <div class="w-full max-h-[calc(100%-2.5em)] overflow-scroll text-wrap p-2">
         <slot>kikou</slot>

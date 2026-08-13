@@ -9,6 +9,7 @@ const { notifications } = storeToRefs(store);
 
 const displayedNotification = ref<Toast | null>(null);
 const timeId = ref<number | null>(null);
+const toastDuration = 5000;
 
 onMounted(() => {
   handleToast();
@@ -16,9 +17,7 @@ onMounted(() => {
 
 watch(
   () => notifications.value.length,
-  () => {
-    handleToast();
-  },
+  () => handleToast(),
 );
 
 function handleToast() {
@@ -31,7 +30,7 @@ function handleToast() {
     timeId.value = null;
     displayedNotification.value = null;
     if (timeId.value) clearTimeout(timeId.value);
-  }, 5000);
+  }, toastDuration);
 }
 </script>
 
@@ -43,7 +42,7 @@ function handleToast() {
     <div
       v-if="displayedNotification"
       :key="Date.now()"
-      class="absolute m-2 top-0 right-0 z-60 w-50 min-h-5 bg-surface rounded border-dark border"
+      class="fixed m-2 top-15 right-0 z-60 w-80 min-h-5 bg-surface rounded border-2 border-dark overflow-clip"
     >
       <h1 class="text-accent px-2 h-full bg-dark text-lg font-bold">
         {{ displayedNotification?.title }}
@@ -55,14 +54,13 @@ function handleToast() {
 
 <style scoped>
 .v-enter-active {
-  transition: all 0.5s;
-  transform: translateX(300px);
+  transform: translateX(100px);
   opacity: 0;
 }
 
 .v-leave-active {
   position: absolute;
-  transform: translateX(300px);
+  transform: translateX(100px);
   opacity: 0;
 }
 </style>
